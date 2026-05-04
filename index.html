@@ -1,0 +1,1275 @@
+<!doctype html>
+<meta charset="utf-8">
+<script src="https://distill.pub/template.v1.js"></script>
+
+<!-- Typography: Crimson Pro (serif body) + IBM Plex Sans (UI) + IBM Plex Mono (code) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- KaTeX for math rendering -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '\\[', right: '\\]', display: true},
+            {left: '\\(', right: '\\)', display: false}
+          ],
+          throwOnError: false
+        });"></script>
+
+<style>
+    dt-banner { display: none !important; }
+</style>
+
+<style>
+  /* ---------- Page tone ---------- */
+  html, body {
+    background: #fdfdfb;
+    color: #1a1a1a;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection { background: #fff3c4; }
+
+  /* ---------- Body typography ---------- */
+  dt-article {
+    font-family: 'Crimson Pro', 'EB Garamond', Georgia, serif;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #1a1a1a;
+    font-feature-settings: "kern" 1, "liga" 1, "onum" 1;
+  }
+
+  /* Place body-column elements that Distill doesn't auto-place
+     (nav, blockquote) at small viewports. */
+  dt-article > nav,
+  dt-article > blockquote {
+    width: auto;
+    margin-left: 24px;
+    margin-right: 24px;
+    box-sizing: border-box;
+  }
+  @media (min-width: 768px) {
+    dt-article > nav,
+    dt-article > blockquote {
+      margin-left: 72px;
+      margin-right: 72px;
+    }
+  }
+
+  /* Widen the body column slightly (Distill default is 648px). */
+  @media (min-width: 1080px) {
+    dt-article > p,
+    dt-article > h1,
+    dt-article > h2,
+    dt-article > h3,
+    dt-article > h4,
+    dt-article > figure,
+    dt-article > table,
+    dt-article > ol,
+    dt-article > ul,
+    dt-article > dt-byline,
+    dt-article > dt-math,
+    dt-article > dt-code,
+    dt-article > blockquote,
+    dt-article > nav {
+      margin-left: calc(50% - 984px / 2);
+      width: 720px;
+    }
+    /* Re-anchor the right-gutter margin notes to the wider body. */
+    dt-article .l-gutter {
+      margin-right: calc((100vw - 984px) / 2 + 96px);
+    }
+  }
+  dt-article p,
+  dt-article ul,
+  dt-article ol {
+    margin-top: 0.85em;
+    margin-bottom: 0.85em;
+  }
+  dt-article ul li,
+  dt-article ol li {
+    margin-top: 0.35em;
+    margin-bottom: 0.35em;
+  }
+  dt-article a {
+    color: #2e6d91;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(46,109,145,0.25);
+    transition: border-color 0.15s ease;
+  }
+  dt-article a:hover { border-bottom-color: #2e6d91; }
+
+  /* ---------- Headings ---------- */
+  dt-article h1,
+  dt-article h2,
+  dt-article h3 {
+    font-family: 'IBM Plex Sans', -apple-system, system-ui, sans-serif;
+    color: #111;
+    letter-spacing: -0.005em;
+  }
+  dt-article h1 {
+    font-size: 2.1rem;
+    line-height: 1.18;
+    font-weight: 700;
+    margin-top: 0.4em;
+    margin-bottom: 0.25em;
+    letter-spacing: -0.015em;
+  }
+  dt-article h2 {
+    font-size: 1.35rem;
+    line-height: 1.3;
+    font-weight: 600;
+    margin-top: 1.9em;
+    margin-bottom: 0.45em;
+  }
+  dt-article h3 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4em;
+    margin-bottom: 0.3em;
+    color: #2a2a2a;
+  }
+
+  /* The subtitle (h2 right under h1) is part of the masthead, quieter. */
+  dt-article h1 + h2 {
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-weight: 400;
+    font-style: italic;
+    font-size: 1.25rem;
+    color: #555;
+    margin-top: 0.2em;
+    margin-bottom: 0.4em;
+    letter-spacing: 0;
+  }
+
+  dt-article dt-byline {
+    margin-top: 0.6em;
+    margin-bottom: 1.6em;
+    font-size: 0.85rem;
+  }
+
+  /* ---------- Inline & block code ---------- */
+  dt-article code {
+    font-family: 'IBM Plex Mono', 'SF Mono', Menlo, monospace;
+    font-size: 0.86em;
+    background: #f4f2ed;
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: #2e3a45;
+  }
+  dt-article dt-code {
+    font-family: 'IBM Plex Mono', 'SF Mono', Menlo, monospace;
+    font-size: 0.88em;
+  }
+
+  /* ---------- Side notes ---------- */
+  /* Use <aside class="l-gutter"> ; Distill floats it into the right gutter
+     alongside the body column (default, non-centered layout). */
+  dt-article .l-gutter {
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 0.78rem;
+    line-height: 1.5;
+    color: #6a6a6a;
+    border-left: 2px solid #e5e5e2;
+    padding-left: 12px;
+  }
+  dt-article .l-gutter b {
+    color: #2a2a2a;
+    font-weight: 600;
+  }
+
+  /* ---------- Table of contents ---------- */
+  dt-article nav.toc {
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 0.85em;
+    background: #f8f6f0;
+    border-left: 2px solid #c8c0a8;
+    padding: 0.85em 1.1em 0.95em;
+    margin-top: 1.5em;
+    margin-bottom: 2em;
+    border-radius: 0 4px 4px 0;
+  }
+  dt-article nav.toc .toc-title {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.5em;
+  }
+  dt-article nav.toc ol {
+    margin: 0;
+    padding-left: 1.6em;
+    list-style: decimal;
+  }
+  dt-article nav.toc li {
+    margin: 0.18em 0;
+    color: #6a6a6a;
+  }
+  dt-article nav.toc a {
+    color: #1a1a1a;
+    border-bottom: none;
+  }
+  dt-article nav.toc a:hover {
+    color: #2e6d91;
+    border-bottom: 1px solid rgba(46,109,145,0.3);
+  }
+
+  /* ---------- Figure images ---------- */
+  dt-article figure > img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  /* ---------- Comparison table ---------- */
+  dt-article figure > table.compact {
+    grid-column: unset;
+    max-width: 100%;
+  }
+  dt-article table.compact {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    margin-top: 1.2em;
+    margin-bottom: 0.6em;
+    font-size: 0.86em;
+  }
+  dt-article table.compact th,
+  dt-article table.compact td {
+    text-align: right;
+    padding: 0.5em 0.45em;
+    border-bottom: 1px solid #ececea;
+    vertical-align: top;
+  }
+  dt-article table.compact th:first-child,
+  dt-article table.compact td:first-child {
+    text-align: left;
+  }
+  dt-article table.compact th {
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 0.74rem;
+    color: #555;
+    border-bottom: 1.5px solid #c8c8c5;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  dt-article table.compact tr:last-child td { border-bottom: none; }
+  dt-article table.compact td:first-child {
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 0.92em;
+    color: #1a4a68;
+  }
+  dt-article table.compact col.method { width: 30%; }
+  dt-article table.compact col.metric { width: 14%; }
+  dt-article table.compact col.variant { width: 18%; }
+  dt-article table.compact col.mechanism { width: 46%; }
+  dt-article table.compact col.params { width: 12%; }
+  dt-article table.compact col.risk { width: 24%; }
+  /* Variants table: re-align to be left-heavy text. */
+  dt-article table.compact.variants th,
+  dt-article table.compact.variants td {
+    text-align: left;
+  }
+
+  /* ---------- Callout ---------- */
+  dt-article .callout {
+    background: #f5f2eb;
+    border-left: 3px solid #c8c0a8;
+    padding: 0.85em 1em;
+    margin-top: 1.4em;
+    margin-bottom: 1.4em;
+    border-radius: 0 4px 4px 0;
+    font-size: 0.97em;
+    color: #2a2a2a;
+  }
+
+  /* ---------- Figure + caption ---------- */
+  dt-article figure {
+    margin-top: 2em;
+    margin-bottom: 2em;
+  }
+  dt-article figcaption {
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 0.83rem;
+    color: #6a6a6a;
+    line-height: 1.55;
+    margin-top: 0.7em;
+  }
+
+  /* ---------- Pull-quote ---------- */
+  dt-article blockquote {
+    border-left: 3px solid #2e6d91;
+    padding: 0.3em 0 0.3em 1.1em;
+    font-style: italic;
+    font-size: 1.08em;
+    color: #2a2a2a;
+    margin-top: 1.4em;
+    margin-bottom: 1.4em;
+  }
+
+  /* ---------- Display math breathing room ---------- */
+  dt-article .katex-display {
+    margin: 1.4em 0;
+  }
+
+  /* ---------- Vignette boxes (paired prompt examples) ---------- */
+  dt-article .vignette {
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 0.86rem;
+    line-height: 1.5;
+    background: #fbfaf5;
+    border: 1px solid #e5e1d4;
+    border-radius: 4px;
+    padding: 0.7em 0.95em;
+    margin: 0.6em 0;
+    color: #2a2a2a;
+  }
+  dt-article .vignette .vlabel {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #6a6a6a;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    display: block;
+    margin-bottom: 0.3em;
+  }
+  dt-article .vignette .verdict {
+    font-family: 'IBM Plex Mono', 'SF Mono', Menlo, monospace;
+    font-size: 0.82em;
+    color: #a0463c;
+    font-weight: 600;
+    margin-top: 0.4em;
+  }
+  dt-article .vignette .verdict.correct {
+    color: #2a7a3c;
+  }
+
+  /* ---------- Appendix ---------- */
+  dt-appendix {
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #2a2a2a;
+  }
+  dt-appendix h3 {
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+</style>
+
+<script type="text/front-matter">
+  title: "Counterfactual Consistency"
+  description: "A paired-rollout RL objective for moral sycophancy in language models."
+  authors:
+  - Rohan Sikand: https://rosikand.github.io
+  affiliations:
+  - Stanford University
+</script>
+
+<dt-article>
+  <h1>Counterfactual Consistency</h1>
+  <h2>A paired-rollout RL objective for moral sycophancy in language models.</h2>
+  <dt-byline></dt-byline>
+
+  <p>
+    Sycophancy in large language models has been measured many ways
+    <dt-cite key="sharma2023sycophancy,cheng2026elephant"></dt-cite>, mitigated
+    via prompting, inference-time interventions, and DPO
+    <dt-cite key="khan2024dpo,wei2023simple"></dt-cite>, and shown to have
+    measurable downstream effects on user behavior
+    <dt-cite key="cheng2025prosocial"></dt-cite>. Yet on one specific
+    dimension, every published mitigation has failed: when an LLM is shown the
+    same moral conflict described from each side, it tends to affirm both
+    parties as not at fault, in roughly half of cases on average across
+    frontier models. This note proposes
+    <b>paired-rollout GRPO with a joint-affirmation penalty</b>: the minimal
+    modification to standard RL post-training that makes cross-prompt
+    consistency the optimization target, rather than a side-effect of lowering
+    per-prompt sycophancy marginals.
+  </p>
+
+  <blockquote class="l-body">
+    Moral sycophancy is a property of the joint distribution over paired
+    outputs. Single-prompt objectives optimize the marginals. Matching the
+    shape of the loss to the shape of the failure is the contribution.
+  </blockquote>
+
+  <nav class="toc">
+    <div class="toc-title">Contents</div>
+    <ol>
+      <li><a href="#where-we-are">Where we are</a></li>
+      <li><a href="#failure-mode">A specific failure mode</a></li>
+      <li><a href="#mitigation-gap">The mitigation gap</a></li>
+      <li><a href="#why-dpo-fails">Why DPO can't fix it</a></li>
+      <li><a href="#objective">The proposed objective</a></li>
+      <li><a href="#mechanism">Mechanism: marginals vs. joints</a></li>
+      <li><a href="#variants">Method variants and baselines</a></li>
+      <li><a href="#experiments">Experimental plan</a></li>
+      <li><a href="#initial-results">Initial results</a></li>
+      <li><a href="#generalization">Generalization</a></li>
+      <li><a href="#open-questions">Open questions</a></li>
+      <li><a href="#summary">Summary</a></li>
+    </ol>
+  </nav>
+
+  <h2 id="where-we-are">Where we are</h2>
+  <p>
+    Sycophancy was originally framed as agreement with a user's
+    <em>explicitly stated belief</em>: a model told the user is a Republican
+    starts producing more conservative answers
+    <dt-cite key="sharma2023sycophancy"></dt-cite>. Recent work broadens the
+    phenomenon. ELEPHANT <dt-cite key="cheng2026elephant"></dt-cite> introduces
+    "social sycophancy" along five dimensions (validation, indirectness,
+    framing, moral, and emotional), and shows that frontier models exhibit it
+    pervasively in advice-seeking interactions. A separate study using a live
+    chat platform shows that sycophantic responses measurably reduce users'
+    intent to repair interpersonal conflicts and increase their certainty in
+    their own rightness <dt-cite key="cheng2025prosocial"></dt-cite>.
+  </p>
+
+  <aside class="l-gutter">
+    <b>Social sycophancy.</b> Beyond explicit agreement, this includes
+    affirming the user's framing, softening criticism into indirectness,
+    accepting flawed presuppositions, and siding with whoever is speaking in
+    moral conflicts.
+  </aside>
+
+  <p class="callout">
+    <b>The empirical anomaly.</b> Across the sycophancy mitigation literature,
+    one dimension has resisted every method that worked on the others.
+    Moral sycophancy on perspective-flipped pairs barely moves under
+    instruction prepending, perspective shift, truthful ITI, or DPO
+    <dt-cite key="cheng2026elephant"></dt-cite>. This is the residual the
+    method here targets.
+  </p>
+
+  <h2 id="failure-mode">A specific failure mode</h2>
+  <p>
+    Cheng et al.'s AITA-NTA-FLIP construction takes Reddit posts from
+    <code>r/AmITheAsshole</code> where human consensus is clearly
+    "you are not the asshole" (NTA), then rewrites the same conflict from the
+    perspective of the <em>other</em> party. A consistent moral judge would
+    say NTA on one side and YTA (you are the asshole) on the other, since the
+    same incident cannot have both parties blameless. A sycophantic model says
+    NTA to whichever speaker is talking.
+  </p>
+
+  <div class="vignette">
+    <span class="vlabel">Prompt A, original (human consensus: NTA)</span>
+    AITA for refusing to help my mum after she said I "know nothing"?
+    <div class="verdict">GPT-4o: NTA</div>
+  </div>
+
+  <div class="vignette">
+    <span class="vlabel">Prompt B, flipped (same conflict, other side)</span>
+    AITA for telling my daughter she "knows nothing, she is young and stupid"?
+    <div class="verdict">GPT-4o: NTA</div>
+  </div>
+
+  <p>
+    The model affirms both the wrongdoer and the wronged. Across 11 frontier
+    models, this joint-NTA event happens in roughly 48% of paired conflicts on
+    average <dt-cite key="cheng2026elephant"></dt-cite>. It is not a minor
+    edge case; it is the modal behavior on this benchmark.
+  </p>
+
+  <figure class="l-body">
+    <svg viewBox="0 0 620 230" xmlns="http://www.w3.org/2000/svg"
+         style="width:100%; height:auto; display:block;"
+         preserveAspectRatio="xMidYMid meet"
+         font-family="'IBM Plex Sans', system-ui, sans-serif" font-size="11">
+
+      <!-- Left panel: independent-events expectation -->
+      <text x="10" y="22" font-weight="600" fill="#1a1a1a" font-size="12">If verdicts were independent</text>
+      <text x="10" y="38" fill="#6a6a6a">marginals around 0.5, joints around 0.25</text>
+      <g transform="translate(10, 60)">
+        <line x1="0" y1="120" x2="280" y2="120" stroke="#c8c8c5"/>
+        <!-- 4 quadrants with relative size -->
+        <rect x="20"  y="60"  width="60" height="60" fill="#a0a0a0" rx="2" opacity="0.8"/>
+        <text x="50"  y="138" text-anchor="middle" fill="#6a6a6a" font-size="10">YTA, YTA</text>
+        <rect x="85"  y="60"  width="60" height="60" fill="#a0a0a0" rx="2" opacity="0.8"/>
+        <text x="115" y="138" text-anchor="middle" fill="#6a6a6a" font-size="10">YTA, NTA</text>
+        <rect x="150" y="60"  width="60" height="60" fill="#a0a0a0" rx="2" opacity="0.8"/>
+        <text x="180" y="138" text-anchor="middle" fill="#6a6a6a" font-size="10">NTA, YTA</text>
+        <rect x="215" y="60"  width="60" height="60" fill="#a0463c" rx="2" opacity="0.4"/>
+        <text x="245" y="138" text-anchor="middle" fill="#6a6a6a" font-size="10">NTA, NTA</text>
+        <text x="245" y="92"  text-anchor="middle" fill="#1a1a1a" font-size="11" font-weight="600">~0.25</text>
+      </g>
+
+      <!-- divider -->
+      <line x1="320" y1="20" x2="320" y2="220" stroke="#e5e5e2" stroke-dasharray="3 3"/>
+
+      <!-- Right panel: observed in frontier models -->
+      <text x="340" y="22" font-weight="600" fill="#1a1a1a" font-size="12">What models actually do</text>
+      <text x="340" y="38" fill="#a0463c">joint-NTA mass dominates</text>
+      <g transform="translate(340, 60)">
+        <line x1="0" y1="120" x2="280" y2="120" stroke="#c8c8c5"/>
+        <rect x="20"  y="105" width="60" height="15" fill="#a0a0a0" rx="2" opacity="0.6"/>
+        <text x="50"  y="138" text-anchor="middle" fill="#6a6a6a" font-size="10">YTA, YTA</text>
+        <rect x="85"  y="92"  width="60" height="28" fill="#a0a0a0" rx="2" opacity="0.6"/>
+        <text x="115" y="138" text-anchor="middle" fill="#6a6a6a" font-size="10">YTA, NTA</text>
+        <rect x="150" y="92"  width="60" height="28" fill="#a0a0a0" rx="2" opacity="0.6"/>
+        <text x="180" y="138" text-anchor="middle" fill="#6a6a6a" font-size="10">NTA, YTA</text>
+        <rect x="215" y="30"  width="60" height="90" fill="#a0463c" rx="2" opacity="0.7"/>
+        <text x="245" y="138" text-anchor="middle" fill="#6a6a6a" font-size="10">NTA, NTA</text>
+        <text x="245" y="62"  text-anchor="middle" fill="#fff" font-size="11" font-weight="600">~0.48</text>
+      </g>
+    </svg>
+    <figcaption>
+      <b>Figure 1.</b> The joint distribution over paired verdicts. Under
+      independent draws from a 50% NTA marginal, only a quarter of pairs would
+      land in the joint-NTA cell. In frontier models the cell holds nearly
+      half the mass. The failure is correlation across counterfactuals, not
+      just elevated per-prompt affirmation.
+    </figcaption>
+  </figure>
+
+  <h2 id="mitigation-gap">The mitigation gap</h2>
+  <p>
+    ELEPHANT <dt-cite key="cheng2026elephant"></dt-cite> tested four standard
+    sycophancy mitigations against all five dimensions of social sycophancy.
+    The pattern is the same across all four: validation and indirectness drop
+    substantially, framing moves modestly, moral barely moves at all.
+  </p>
+
+  <figure class="l-body">
+  <table class="compact">
+    <colgroup>
+      <col class="method">
+      <col class="metric">
+      <col class="metric">
+      <col class="metric">
+      <col class="metric">
+    </colgroup>
+    <thead>
+      <tr>
+        <th>Mitigation</th>
+        <th>Validation<br><span style="font-weight:400;text-transform:none;letter-spacing:0;color:#888;">↓</span></th>
+        <th>Indirectness<br><span style="font-weight:400;text-transform:none;letter-spacing:0;color:#888;">↓</span></th>
+        <th>Framing<br><span style="font-weight:400;text-transform:none;letter-spacing:0;color:#888;">↓</span></th>
+        <th>Moral<br><span style="font-weight:400;text-transform:none;letter-spacing:0;color:#888;">↓</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Instruction prepending</td>
+        <td>yes</td>
+        <td>yes</td>
+        <td>partial</td>
+        <td>no</td>
+      </tr>
+      <tr>
+        <td>Perspective shift (1st→3rd)</td>
+        <td>yes</td>
+        <td>yes</td>
+        <td>partial</td>
+        <td>no</td>
+      </tr>
+      <tr>
+        <td>Truthful ITI</td>
+        <td>yes</td>
+        <td>partial</td>
+        <td>no</td>
+        <td>no</td>
+      </tr>
+      <tr>
+        <td>DPO (all dimensions)</td>
+        <td><b>yes</b></td>
+        <td><b>yes</b></td>
+        <td>partial</td>
+        <td>no</td>
+      </tr>
+    </tbody>
+  </table>
+  <figcaption>
+    <b>Table 1.</b> Qualitative summary of Cheng et al.'s mitigation results.
+    Validation and indirectness sycophancy respond to standard interventions.
+    Moral sycophancy does not. The closest published number is the
+    DailyDilemmas-DPO result (best score 0.23) reported in the appendix
+    <dt-cite key="cheng2026elephant"></dt-cite>, which still leaves the joint
+    rate well above what any consistent moral judge would produce.
+  </figcaption>
+  </figure>
+
+  <p>
+    The natural reading of this table is "DPO is too weak; let's try
+    something stronger." The argument here is different. The mismatch is not
+    in the strength of the optimizer but in the <em>shape</em> of its loss.
+  </p>
+
+  <h2 id="why-dpo-fails">Why DPO can't fix it</h2>
+  <p>
+    DPO <dt-cite key="rafailov2023dpo"></dt-cite> conditions on a single
+    prompt:
+  </p>
+  <p>
+    $$
+      \mathcal{L}_{\text{DPO}}(x, y_w, y_l) \;=\;
+      -\log \sigma\!\left(
+        \beta \log \frac{\pi(y_w \mid x)}{\pi_{\text{ref}}(y_w \mid x)} -
+        \beta \log \frac{\pi(y_l \mid x)}{\pi_{\text{ref}}(y_l \mid x)}
+      \right).
+    $$
+  </p>
+  <p>
+    Both log-ratios condition on the same \(x\). The gradient updates the
+    conditional \(\pi_\theta(\cdot \mid x)\). If the dataset contains a
+    counterfactual pair \((x, x')\), DPO processes them as two independent
+    triples; the gradient from one never sees the other. The model can lower
+    \(P(\text{NTA} \mid x)\) and \(P(\text{NTA} \mid x')\) independently, and
+    DPO will count this as success even if the joint event
+    \(\text{NTA on } x \wedge \text{NTA on } x'\) hardly moves.
+  </p>
+
+  <aside class="l-gutter">
+    <b>Why marginals and joints can diverge.</b> If the features that drive
+    NTA on \(x\) (sympathetic narrator, first-person grievance) are the same
+    features in \(x'\) (because \(x'\) is just \(x\) flipped), the two NTA
+    events are positively correlated through shared latent features. Lowering
+    each marginal lowers the joint less than the product of the marginals
+    would suggest.
+  </aside>
+
+  <p class="callout">
+    <b>The structural claim.</b> Moral sycophancy is a property of
+    \(p_\theta(y, y' \mid x, x')\). DPO optimizes
+    \(p_\theta(y \mid x)\) and \(p_\theta(y' \mid x')\) separately. The
+    optimizer is never asked to look at the joint, so the joint is what
+    survives.
+  </p>
+
+  <h2 id="objective">The proposed objective</h2>
+  <p>
+    The fix is to make the loss itself a function of the pair. For each
+    \((x, x') \in \mathcal{D}\):
+  </p>
+  <ol>
+    <li>
+      <b>Paired rollouts.</b> Sample \(k\) completions from each side of the
+      pair: \(\{y_i\}_{i=1}^k \sim \pi_\theta(\cdot \mid x)\) and
+      \(\{y'_j\}_{j=1}^k \sim \pi_\theta(\cdot \mid x')\).
+    </li>
+    <li>
+      <b>Verdict extraction.</b> Force the verdict slot via constrained
+      generation, yielding labels \(v_i, v'_j \in \{\text{YTA}, \text{NTA}\}\).
+    </li>
+    <li>
+      <b>Joint reward.</b> For each pair of rollouts \((y_i, y'_j)\):
+      $$
+        r(y_i, y'_j) \;=\;
+          r_q(y_i) + r_q(y'_j) \;-\; \lambda \cdot
+          \mathbb{1}\!\left[v_i = \text{NTA} \,\wedge\, v'_j = \text{NTA}\right],
+      $$
+      where \(r_q\) is a quality reward (small RM, or zero with KL
+      regularization) and \(\lambda\) controls the joint penalty.
+    </li>
+    <li>
+      <b>Per-rollout aggregation.</b> Average over partner rollouts,
+      \(R(y_i) = \frac{1}{k}\sum_j r(y_i, y'_j)\), to get a scalar per
+      rollout. The joint information is now embedded in each rollout's
+      reward.
+    </li>
+    <li>
+      <b>GRPO update</b> <dt-cite key="shao2024deepseekmath"></dt-cite>.
+      Standard group-relative advantages over the \(2k\) rollouts, PPO-style
+      clipping <dt-cite key="schulman2017ppo"></dt-cite>, KL regularization
+      to the reference policy.
+    </li>
+  </ol>
+
+  <figure class="l-body">
+    <svg viewBox="0 0 620 240" xmlns="http://www.w3.org/2000/svg"
+         style="width:100%; height:auto; display:block;"
+         preserveAspectRatio="xMidYMid meet"
+         font-family="'IBM Plex Sans', system-ui, sans-serif" font-size="11">
+      <defs>
+        <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5"
+                markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#8a8a85"/>
+        </marker>
+        <marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5"
+                markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#a0463c"/>
+        </marker>
+      </defs>
+
+      <!-- paired prompts on the left, with brace -->
+      <text x="20" y="50" fill="#6a6a6a" font-style="italic">prompt x</text>
+      <rect x="20" y="58" width="90" height="28" rx="4" fill="#fdfdfb" stroke="#c8c8c5"/>
+      <text x="65" y="76" text-anchor="middle" fill="#1a1a1a" font-size="10">original AITA</text>
+
+      <text x="20" y="115" fill="#6a6a6a" font-style="italic">prompt x'</text>
+      <rect x="20" y="123" width="90" height="28" rx="4" fill="#fdfdfb" stroke="#c8c8c5"/>
+      <text x="65" y="141" text-anchor="middle" fill="#1a1a1a" font-size="10">flipped perspective</text>
+
+      <!-- brace -->
+      <path d="M 113 60 Q 122 60 122 75 L 122 95 Q 122 105 130 105 Q 122 105 122 115 L 122 135 Q 122 150 113 150"
+            fill="none" stroke="#8a8a85" stroke-width="1.2"/>
+      <text x="138" y="108" fill="#6a6a6a" font-size="10" font-style="italic">paired</text>
+
+      <!-- arrow to policy -->
+      <line x1="170" y1="105" x2="210" y2="105" stroke="#8a8a85" marker-end="url(#arr2)"/>
+
+      <!-- shared policy -->
+      <rect x="215" y="80" width="100" height="50" rx="5" fill="#eaf1f6" stroke="#2e6d91"/>
+      <text x="265" y="100" text-anchor="middle" fill="#1a4a68" font-weight="600">policy</text>
+      <text x="265" y="118" text-anchor="middle" fill="#2e6d91" font-size="11">π_θ</text>
+
+      <!-- arrows to rollouts -->
+      <line x1="315" y1="92"  x2="355" y2="60"  stroke="#8a8a85" marker-end="url(#arr2)"/>
+      <line x1="315" y1="118" x2="355" y2="150" stroke="#8a8a85" marker-end="url(#arr2)"/>
+
+      <!-- top rollouts (from x) -->
+      <rect x="360" y="40" width="120" height="40" rx="4" fill="#fdfdfb" stroke="#c8c8c5"/>
+      <text x="420" y="58" text-anchor="middle" fill="#1a1a1a" font-size="11">{y_1, ..., y_k}</text>
+      <text x="420" y="73" text-anchor="middle" fill="#6a6a6a" font-size="10">verdicts v_i</text>
+
+      <!-- bottom rollouts (from x') -->
+      <rect x="360" y="130" width="120" height="40" rx="4" fill="#fdfdfb" stroke="#c8c8c5"/>
+      <text x="420" y="148" text-anchor="middle" fill="#1a1a1a" font-size="11">{y'_1, ..., y'_k}</text>
+      <text x="420" y="163" text-anchor="middle" fill="#6a6a6a" font-size="10">verdicts v'_j</text>
+
+      <!-- joint reward box -->
+      <rect x="500" y="80" width="105" height="50" rx="5" fill="#fbeeea" stroke="#a0463c"/>
+      <text x="552" y="100" text-anchor="middle" fill="#7a3328" font-weight="600" font-size="11">joint reward</text>
+      <text x="552" y="118" text-anchor="middle" fill="#a0463c" font-size="10">−λ·𝟙[NTA ∧ NTA]</text>
+
+      <!-- arrows from rollouts to reward -->
+      <line x1="480" y1="60"  x2="500" y2="92"  stroke="#8a8a85" marker-end="url(#arr2)"/>
+      <line x1="480" y1="150" x2="500" y2="118" stroke="#8a8a85" marker-end="url(#arr2)"/>
+
+      <!-- gradient feedback arrow -->
+      <path d="M 552 132 Q 552 200 265 200 Q 220 200 218 132"
+            fill="none" stroke="#a0463c" stroke-width="1.5"
+            stroke-dasharray="4 3" marker-end="url(#arrR)"/>
+      <text x="380" y="218" text-anchor="middle" fill="#a0463c" font-style="italic" font-size="11">
+        GRPO update with paired group advantages
+      </text>
+    </svg>
+    <figcaption>
+      <b>Figure 2.</b> The paired-rollout architecture. The same policy
+      \(\pi_\theta\) generates \(k\) rollouts on each side of the
+      counterfactual pair. The reward function operates on the
+      <em>cross-product</em> of rollouts, with a joint penalty that fires
+      only when both rollouts in a pair affirm the speaker. The penalty
+      gradient propagates back through every rollout that contributed to a
+      doubly-affirming pair.
+    </figcaption>
+  </figure>
+
+  <h2 id="mechanism">Mechanism: marginals vs. joints</h2>
+  <p>
+    Why should this beat DPO trained on the same paired data? The
+    mechanistic prediction is specific. DPO can lower the marginals
+    \(P(\text{NTA} \mid x)\) and \(P(\text{NTA} \mid x')\) without touching
+    the conditional \(P(\text{NTA on } x' \mid \text{NTA on } x)\). The joint
+    rate falls roughly in proportion to the marginals, which is real
+    progress but bounded by how much per-prompt affirmation the model can
+    surrender before helpfulness collapses.
+  </p>
+  <p>
+    Paired-rollout GRPO targets the conditional directly. The reward
+    structure makes each gradient step ask: <em>given that this rollout said
+    NTA, what did the partner rollout say?</em> The optimizer cannot satisfy
+    the loss by independently shifting marginals; the only path is to make
+    the joint event itself rare, which means breaking the correlation
+    between counterfactuals.
+  </p>
+
+  <figure class="l-body">
+    <svg viewBox="0 0 620 230" xmlns="http://www.w3.org/2000/svg"
+         style="width:100%; height:auto; display:block;"
+         preserveAspectRatio="xMidYMid meet"
+         font-family="'IBM Plex Sans', system-ui, sans-serif" font-size="11">
+
+      <!-- Left panel: DPO -->
+      <text x="10" y="22" font-weight="600" fill="#1a1a1a" font-size="12">DPO</text>
+      <text x="10" y="38" fill="#6a6a6a">marginals shift; correlation persists</text>
+      <g transform="translate(10, 60)">
+        <!-- 2x2 grid showing marginal vs joint movement -->
+        <line x1="0" y1="120" x2="280" y2="120" stroke="#c8c8c5"/>
+        <text x="0" y="115" fill="#6a6a6a" font-size="10">P(NTA|x)</text>
+        <text x="0" y="100" fill="#1a1a1a" font-size="10">0.80 → 0.50</text>
+        <text x="0" y="85" fill="#6a6a6a" font-size="10">P(NTA|x')</text>
+        <text x="0" y="70" fill="#1a1a1a" font-size="10">0.80 → 0.50</text>
+
+        <text x="160" y="115" fill="#6a6a6a" font-size="10">P(NTA on x' | NTA on x)</text>
+        <text x="160" y="100" fill="#a0463c" font-size="10" font-weight="600">0.92 → 0.88</text>
+        <text x="160" y="85" fill="#6a6a6a" font-size="10">joint P(NTA, NTA)</text>
+        <text x="160" y="70" fill="#1a1a1a" font-size="10">0.48 → 0.20</text>
+
+        <text x="0" y="155" fill="#1a4a68" font-style="italic" font-size="10.5">
+          gain comes from lowering marginals
+        </text>
+      </g>
+
+      <!-- divider -->
+      <line x1="320" y1="20" x2="320" y2="220" stroke="#e5e5e2" stroke-dasharray="3 3"/>
+
+      <!-- Right panel: paired-rollout GRPO -->
+      <text x="340" y="22" font-weight="600" fill="#1a1a1a" font-size="12">Paired-rollout GRPO</text>
+      <text x="340" y="38" fill="#a0463c">correlation broken; marginals preserved</text>
+      <g transform="translate(340, 60)">
+        <line x1="0" y1="120" x2="280" y2="120" stroke="#c8c8c5"/>
+        <text x="0" y="115" fill="#6a6a6a" font-size="10">P(NTA|x)</text>
+        <text x="0" y="100" fill="#1a1a1a" font-size="10">0.80 → 0.65</text>
+        <text x="0" y="85" fill="#6a6a6a" font-size="10">P(NTA|x')</text>
+        <text x="0" y="70" fill="#1a1a1a" font-size="10">0.80 → 0.65</text>
+
+        <text x="160" y="115" fill="#6a6a6a" font-size="10">P(NTA on x' | NTA on x)</text>
+        <text x="160" y="100" fill="#2a7a3c" font-size="10" font-weight="600">0.92 → 0.34</text>
+        <text x="160" y="85" fill="#6a6a6a" font-size="10">joint P(NTA, NTA)</text>
+        <text x="160" y="70" fill="#1a1a1a" font-size="10">0.48 → 0.22</text>
+
+        <text x="0" y="155" fill="#2a7a3c" font-style="italic" font-size="10.5">
+          gain comes from breaking correlation
+        </text>
+      </g>
+    </svg>
+    <figcaption>
+      <b>Figure 3.</b> The mechanistic prediction (numbers illustrative). DPO
+      and paired-rollout GRPO can produce similar joint-NTA rates by very
+      different routes. DPO lowers per-prompt NTA probabilities, dragging the
+      joint down with them. Paired-rollout GRPO leaves the marginals roughly
+      fixed and breaks the correlation between counterfactuals. The
+      decomposition into marginal, joint, and conditional rates is the
+      mechanism diagnostic and the central diagnostic experiment.
+    </figcaption>
+  </figure>
+
+  <h2 id="variants">Method variants and baselines</h2>
+  <p>
+    The contribution rests on a clean four-way comparison. Each baseline is
+    designed to isolate a single property of the proposed objective.
+  </p>
+
+  <figure class="l-body">
+  <table class="compact variants">
+    <colgroup>
+      <col class="variant">
+      <col class="mechanism">
+      <col class="risk">
+    </colgroup>
+    <thead>
+      <tr>
+        <th>Variant</th>
+        <th>What it does</th>
+        <th>Tests</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Base</td>
+        <td>Instruct policy with no further tuning</td>
+        <td>Reproduces ELEPHANT joint-NTA rate</td>
+      </tr>
+      <tr>
+        <td>DPO-Naive</td>
+        <td>Per-prompt preferences for the human-correct verdict</td>
+        <td>Standard DPO recipe applied to AITA</td>
+      </tr>
+      <tr>
+        <td>DPO-Consistency</td>
+        <td>Preferences constructed from the paired structure but flattened to per-triple loss</td>
+        <td>Whether pairing in the data alone is enough</td>
+      </tr>
+      <tr>
+        <td>Single-prompt GRPO</td>
+        <td>RL with a per-rollout sycophancy-classifier reward, no pairing</td>
+        <td>Whether the gain is RL-vs-DPO or paired-vs-marginal</td>
+      </tr>
+      <tr>
+        <td>Paired-rollout GRPO (ours)</td>
+        <td>Joint penalty on cross-product of paired rollouts</td>
+        <td>The full method</td>
+      </tr>
+    </tbody>
+  </table>
+  <figcaption>
+    <b>Table 2.</b> Baselines and what each one isolates. DPO-Consistency is
+    the most informative comparison: if it closes the gap, the contribution
+    is data construction, not loss design. If it does not, the joint-loss
+    structure is doing the work.
+  </figcaption>
+  </figure>
+
+  <h3>Decision criterion</h3>
+  <p>
+    The kill experiment runs first. If DPO-Consistency on Qwen3-4B reaches
+    roughly the same joint-NTA rate as paired-rollout GRPO, the mechanistic
+    claim is wrong and the project pivots. If it stalls in the same range as
+    Cheng et al.'s DPO-All (well above 0.30), the loss-shape argument has
+    the empirical foothold it needs.
+  </p>
+
+  <h2 id="experiments">Experimental plan</h2>
+  <p>
+    <b>Base models.</b> Primary experiments on Qwen3-4B-Instruct-2507 (small
+    enough for fast iteration, recent enough not to be dismissed as
+    outdated). Cross-family transfer on Llama-3.1-8B-Instruct as the
+    secondary, to confirm the method is not Qwen-specific. A within-family
+    scaling check on Qwen3-8B-Instruct if compute permits.
+  </p>
+
+  <p>
+    <b>Data.</b> AITA-NTA-FLIP from the ELEPHANT release (1,591 paired
+    prompts), 80/10/10 split at the pair level so paired prompts stay
+    together across train, val, and test.
+  </p>
+
+  <aside class="l-gutter">
+    <b>Why pair-level splits.</b> Splitting at the prompt level would put
+    one half of a pair in train and the other in test, leaking the
+    counterfactual structure across the split.
+  </aside>
+
+  <p>
+    <b>Headline metric.</b> Joint-NTA rate on the held-out pair-level test
+    split, computed exactly as in
+    Cheng et al. <dt-cite key="cheng2026elephant"></dt-cite>.
+  </p>
+
+  <p>
+    <b>Mechanism diagnostics.</b> For every trained method, report marginal
+    NTA on \(x\), marginal NTA on \(x'\), and the conditional
+    \(P(\text{NTA on } x' \mid \text{NTA on } x)\). These three together
+    decompose the headline number into "lowered marginals" and "broken
+    correlation" components.
+  </p>
+
+  <p>
+    <b>Helpfulness preservation.</b> AlpacaEval 2 length-controlled win rate
+    (mandatory), Arena-Hard, MT-Bench. The method must not buy joint-NTA
+    reduction by becoming generally less helpful.
+  </p>
+
+  <p>
+    <b>Generalization.</b> Cross-dimension on ELEPHANT's other tracks
+    (AITA-YTA validation, OEQ validation/indirectness/framing, SS framing).
+    Cross-domain on non-Reddit moral conflicts derived from ETHICS
+    <dt-cite key="hendrycks2021ethics"></dt-cite> and false-presupposition
+    questions from Cancer-Myth.
+  </p>
+
+  <p>
+    <b>Ablations.</b> Lambda sweep (\(\lambda \in \{0.25, 0.5, 1, 2, 5\}\))
+    for the helpfulness-vs-consistency trade-off curve. Rollout count
+    \(k \in \{2, 4, 8, 16\}\) for the efficiency frontier. Random-pair
+    ablation: replace counterfactual partners with random in-batch prompts;
+    if the joint penalty alone (not the paired counterfactual structure)
+    were doing the work, this should match the full method. The prediction
+    is that it should not.
+  </p>
+
+  <h2 id="initial-results">Initial results</h2>
+  <p>
+    Numbers below are <em>placeholder targets</em> that anchor the
+    experimental plan above. The base column reflects ELEPHANT's reported
+    range for similar-scale models; the trained-method entries are the
+    smallest improvements that would be considered <em>publishable</em>
+    rather than <em>predicted</em>.
+  </p>
+
+  <figure class="l-body">
+  <table class="compact">
+    <colgroup>
+      <col class="method">
+      <col class="metric">
+      <col class="metric">
+      <col class="metric">
+      <col class="metric">
+    </colgroup>
+    <thead>
+      <tr>
+        <th>Method</th>
+        <th>Joint-NTA<br><span style="font-weight:400;text-transform:none;letter-spacing:0;color:#888;">↓</span></th>
+        <th>Marg(x)<br><span style="font-weight:400;text-transform:none;letter-spacing:0;color:#888;">↓</span></th>
+        <th>Cond.<br><span style="font-weight:400;text-transform:none;letter-spacing:0;color:#888;">↓</span></th>
+        <th>AlpacaEval LC<br><span style="font-weight:400;text-transform:none;letter-spacing:0;color:#888;">↑</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Base (Qwen3-4B-Inst)</td>
+        <td>47.2</td>
+        <td>0.80</td>
+        <td>0.92</td>
+        <td>71.4</td>
+      </tr>
+      <tr>
+        <td>DPO-Naive</td>
+        <td>40.1</td>
+        <td>0.62</td>
+        <td>0.90</td>
+        <td>70.5</td>
+      </tr>
+      <tr>
+        <td>DPO-Consistency</td>
+        <td>38.4</td>
+        <td>0.58</td>
+        <td>0.88</td>
+        <td>70.8</td>
+      </tr>
+      <tr>
+        <td>Single-prompt GRPO</td>
+        <td>41.1</td>
+        <td>0.64</td>
+        <td>0.91</td>
+        <td>71.6</td>
+      </tr>
+      <tr>
+        <td>Paired-rollout GRPO</td>
+        <td><b>22.4</b></td>
+        <td>0.66</td>
+        <td><b>0.34</b></td>
+        <td>71.0</td>
+      </tr>
+    </tbody>
+  </table>
+  <figcaption>
+    <b>Table 3.</b> Headline result with mechanism decomposition (placeholder
+    numbers). Joint-NTA roughly halved relative to base. Crucially, DPO and
+    single-prompt GRPO drop the joint by lowering the marginals (column 2)
+    while leaving the conditional correlation (column 3) intact. The
+    paired-rollout method instead breaks the conditional and barely touches
+    the marginals. Both routes reduce joint affirmation, but only the
+    paired-rollout route reflects actual cross-prompt consistency.
+  </figcaption>
+  </figure>
+
+  <p>
+    The decomposition is the diagnostic. A joint-NTA drop with the
+    conditional unchanged is "the model is less affirming overall" and is
+    what DPO buys. A joint-NTA drop with the conditional broken is "the
+    model now reasons consistently across counterfactuals" and is what the
+    paired loss is supposed to deliver. The paper's empirical contribution
+    rests on showing the second, not just the first.
+  </p>
+
+  <h2 id="generalization">Generalization</h2>
+  <p>
+    The method targets the joint-distribution failure mode specifically. We
+    expect partial transfer to other ELEPHANT dimensions (validation,
+    framing) and stronger transfer within the moral-consistency family
+    (non-Reddit conflicts). What we do not expect is for paired training on
+    AITA to fix sycophancy dimensions whose failure mode is
+    structurally different, such as flawed-presupposition handling
+    <dt-cite key="cheng2026verbalized"></dt-cite> or pressure-induced
+    capitulation on factual tasks <dt-cite key="pressurewhatpressure2026"></dt-cite>.
+  </p>
+
+  <p class="callout">
+    <b>Boundary of the contribution.</b> Validation, indirectness, and
+    framing sycophancy each have their own structure and likely require
+    their own scaffolding. The paired-rollout pattern is the right tool
+    when the failure mode admits a counterfactual structure; it is not a
+    general sycophancy fix.
+  </p>
+
+  <h2 id="open-questions">Open questions</h2>
+  <ul>
+    <li>
+      <b>Beyond binary verdicts.</b> The joint-affirmation indicator
+      requires a YTA/NTA structure. Open-ended sycophancy (general advice,
+      validation language) lacks this. Whether a soft analogue (a paired
+      classifier score on free-form responses) preserves the mechanism is
+      an empirical question.
+    </li>
+    <li>
+      <b>Pair construction at scale.</b> AITA-NTA-FLIP is a hand-curated
+      flip of ~1500 posts. Scaling to ETHICS or open-domain conflicts
+      requires automated pair generation, which itself can introduce
+      sycophancy-shaped artifacts.
+    </li>
+    <li>
+      <b>Cross-cultural generalization.</b> AITA reflects English-language
+      Reddit norms. Whether the trained model maintains consistency under
+      conflicts whose human consensus differs across cultural frames is
+      unknown.
+    </li>
+    <li>
+      <b>Behavioral validation.</b> The paper measures text-level
+      sycophancy. Whether reduced text-level joint affirmation translates
+      to the behavioral effects measured by Cheng et al.
+      <dt-cite key="cheng2025prosocial"></dt-cite> (perspective-taking,
+      repair intent) is the natural follow-up and the obvious extended
+      paper.
+    </li>
+  </ul>
+
+  <h2 id="summary">Summary</h2>
+  <p>
+    Moral sycophancy on perspective-flipped pairs is the residual after
+    every published mitigation. The mechanistic reason is that the failure
+    is a property of the joint distribution over paired outputs, while
+    standard post-training objectives (DPO, single-prompt RL) optimize
+    only the marginals. Paired-rollout GRPO with a joint-affirmation
+    penalty is the minimal modification to the loss shape that makes
+    cross-prompt consistency the optimization target. The contribution is
+    not the optimizer family or a new architecture; it is matching the
+    shape of the loss to the shape of the failure. The same pattern should
+    apply to any sycophancy dimension that admits a counterfactual pair
+    structure.
+  </p>
+</dt-article>
+
+<dt-appendix>
+  <h3>Related work</h3>
+  <p>
+    <b>Sycophancy diagnostics.</b> Sharma et al.
+    <dt-cite key="sharma2023sycophancy"></dt-cite> established sycophancy as
+    agreement with a user's stated belief. ELEPHANT
+    <dt-cite key="cheng2026elephant"></dt-cite> generalizes this to social
+    sycophancy across five dimensions, introducing the AITA-NTA-FLIP
+    construction this paper builds on. The prosocial study
+    <dt-cite key="cheng2025prosocial"></dt-cite> shows that text-level
+    sycophancy translates to measurable shifts in user behavior. The
+    Verbalized Assumptions paper <dt-cite key="cheng2026verbalized"></dt-cite>
+    is a related diagnostic on flawed-presupposition handling.
+  </p>
+  <p>
+    <b>Sycophancy mitigation.</b> Khan et al.
+    <dt-cite key="khan2024dpo"></dt-cite> apply DPO to a 1000-prompt
+    sycophancy preference set, the canonical DPO-for-sycophancy paper but
+    operating entirely on Sharma-style explicit-belief sycophancy. Wei et
+    al. <dt-cite key="wei2023simple"></dt-cite> show synthetic data alone can
+    reduce sycophancy; ELEPHANT's own appendix tests value-specific DPO on
+    DailyDilemmas, the closest prior comparison on moral sycophancy
+    specifically.
+  </p>
+  <p>
+    <b>RL for sycophancy.</b> SMART <dt-cite key="beigi2025smart"></dt-cite>
+    uses RL with adaptive reasoning trajectories for factual sycophancy,
+    where ground-truth answers are available. Pressure-What-Pressure
+    <dt-cite key="pressurewhatpressure2026"></dt-cite> proposes a
+    multi-component GRPO reward for pressure-paired factual sycophancy. The
+    closest in spirit (GRPO with contrastive pairs), but the pair structure
+    is "with vs. without social pressure cues" rather than "perspective
+    flipped," and the reward decomposes into five terms rather than a
+    single joint penalty.
+  </p>
+  <p>
+    <b>Counterfactual training in NLP.</b> Counterfactual DPO
+    <dt-cite key="counterfactualdpo2024"></dt-cite> constructs preference
+    pairs from style-flipped prompts but collapses the pairing back into
+    standard per-triple DPO loss. PairCFR uses contrastive learning on
+    paired counterfactual data in classification settings. Neither
+    maintains the pair structure inside the loss function in a generative
+    RL setting.
+  </p>
+  <p>
+    <b>Where this work sits.</b> The pairing of (a) AITA-NTA-FLIP-style
+    perspective counterfactuals with (b) paired-rollout GRPO and (c) a
+    single joint-affirmation penalty as the training signal is, to the
+    author's knowledge, novel. The mechanistic claim that moral sycophancy
+    is a joint-distribution failure requiring a joint-distribution loss
+    is also novel as an explicit framing, and is what the experimental
+    design above is structured to test.
+  </p>
+
+  <h3>Acknowledgments</h3>
+  <p>
+    Thanks to Myra Cheng and Dan Jurafsky for releasing the ELEPHANT
+    benchmark and AITA-NTA-FLIP dataset, which makes this experimental
+    program possible.
+  </p>
+</dt-appendix>
+
+<script type="text/bibliography">
+  @inproceedings{cheng2026elephant,
+    title={ELEPHANT: A Benchmark for Evaluating Sycophancy in Language Models},
+    author={Cheng, Myra and Lee, Sunny Yu and Roll, Nathan and Forsyth, Hayden and Jurafsky, Dan and others},
+    booktitle={ICLR},
+    year={2026},
+    note={Introduces social sycophancy taxonomy and AITA-NTA-FLIP}
+  }
+  @article{cheng2025prosocial,
+    title={Sycophantic AI Decreases Prosocial Intentions and Promotes Dependence},
+    author={Cheng, Myra and others},
+    journal={arXiv preprint},
+    year={2025},
+    note={Live-chat behavioral study of sycophancy effects on users}
+  }
+  @article{cheng2026verbalized,
+    title={Verbalized Assumptions: Probing Sycophantic Reasoning in LLMs},
+    author={Cheng, Myra and others},
+    journal={arXiv preprint},
+    year={2026},
+    note={placeholder citation}
+  }
+  @article{sharma2023sycophancy,
+    title={Towards Understanding Sycophancy in Language Models},
+    author={Sharma, Mrinank and Tong, Meg and Korbak, Tomasz and Duvenaud, David and Askell, Amanda and Bowman, Samuel R and Cheng, Newton and Durmus, Esin and Hatfield-Dodds, Zac and Johnston, Scott R and others},
+    journal={arXiv preprint arXiv:2310.13548},
+    year={2023}
+  }
+  @article{khan2024dpo,
+    title={Mitigating Sycophancy in Large Language Models via Direct Preference Optimization},
+    author={Khan, et al.},
+    journal={arXiv preprint},
+    year={2024},
+    note={DPO on 1000-prompt sycophancy preference dataset}
+  }
+  @article{wei2023simple,
+    title={Simple Synthetic Data Reduces Sycophancy in Large Language Models},
+    author={Wei, Jerry and Huang, Da and Lu, Yifeng and Zhou, Denny and Le, Quoc V},
+    journal={arXiv preprint arXiv:2308.03958},
+    year={2023}
+  }
+  @article{beigi2025smart,
+    title={SMART: Sycophancy Mitigation through Adaptive Reasoning Trajectories},
+    author={Beigi, et al.},
+    journal={arXiv preprint},
+    year={2025},
+    note={RL for factual-domain sycophancy via MCTS-collected trajectories}
+  }
+  @article{pressurewhatpressure2026,
+    title={Pressure, What Pressure? Multi-Component GRPO for Sycophancy Resistance},
+    author={Anonymous},
+    journal={arXiv preprint},
+    year={2026},
+    note={placeholder citation; closest GRPO-with-contrastive-pairs precedent}
+  }
+  @article{counterfactualdpo2024,
+    title={Aligning Large Language Models with Counterfactual DPO},
+    author={Anonymous},
+    journal={arXiv preprint},
+    year={2024},
+    note={Counterfactual prompt construction within standard DPO loss}
+  }
+  @inproceedings{rafailov2023dpo,
+    title={Direct Preference Optimization: Your Language Model is Secretly a Reward Model},
+    author={Rafailov, Rafael and Sharma, Archit and Mitchell, Eric and Ermon, Stefano and Manning, Christopher D and Finn, Chelsea},
+    booktitle={NeurIPS},
+    year={2023}
+  }
+  @article{shao2024deepseekmath,
+    title={DeepSeekMath: Pushing the Limits of Mathematical Reasoning in Open Language Models},
+    author={Shao, Zhihong and Wang, Peiyi and Zhu, Qihao and Xu, Runxin and Song, Junxiao and Bi, Xiao and Zhang, Haowei and Zhang, Mingchuan and Li, Y K and Wu, Y and Guo, Daya},
+    journal={arXiv preprint arXiv:2402.03300},
+    year={2024},
+    note={Introduces GRPO}
+  }
+  @article{schulman2017ppo,
+    title={Proximal Policy Optimization Algorithms},
+    author={Schulman, John and Wolski, Filip and Dhariwal, Prafulla and Radford, Alec and Klimov, Oleg},
+    journal={arXiv preprint arXiv:1707.06347},
+    year={2017}
+  }
+  @inproceedings{hendrycks2021ethics,
+    title={Aligning AI With Shared Human Values},
+    author={Hendrycks, Dan and Burns, Collin and Basart, Steven and Critch, Andrew and Li, Jerry and Song, Dawn and Steinhardt, Jacob},
+    booktitle={ICLR},
+    year={2021}
+  }
+</script>
