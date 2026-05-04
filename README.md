@@ -1,1 +1,1 @@
-Readme
+Working repo for research project on counterfactual consistency reward shaping for reducing sycophancy in language models. 
