@@ -45,9 +45,10 @@
   }
 
   /* Place body-column elements that Distill doesn't auto-place
-     (nav, blockquote) at small viewports. */
+     (nav, blockquote, vignette) at small viewports. */
   dt-article > nav,
-  dt-article > blockquote {
+  dt-article > blockquote,
+  dt-article > div.vignette {
     width: auto;
     margin-left: 24px;
     margin-right: 24px;
@@ -55,7 +56,8 @@
   }
   @media (min-width: 768px) {
     dt-article > nav,
-    dt-article > blockquote {
+    dt-article > blockquote,
+    dt-article > div.vignette {
       margin-left: 72px;
       margin-right: 72px;
     }
@@ -76,7 +78,8 @@
     dt-article > dt-math,
     dt-article > dt-code,
     dt-article > blockquote,
-    dt-article > nav {
+    dt-article > nav,
+    dt-article > div.vignette {
       margin-left: calc(50% - 984px / 2);
       width: 720px;
     }
